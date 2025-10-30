@@ -10,16 +10,12 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
     require $maintenance;
 }
 
+// Register the Composer autoloader...
+require __DIR__.'/../gre_certificate/vendor/autoload.php';
 
-$rootPath = __DIR__;
+// Bootstrap Laravel and handle the request...
+/** @var Application $app */
+$app = require_once __DIR__.'/../gre_certificate/bootstrap/app.php';
 
-// Agar vendor papka shu joyda bo‘lmasa (demak biz public_html dan ishlayapmiz)
-if (!file_exists($rootPath . '/../vendor/autoload.php')) {
-    $rootPath = realpath(__DIR__ . '/../../gre_certificate');
-} else {
-    $rootPath = realpath(__DIR__ . '/..');
-}
 
-require $rootPath . '/vendor/autoload.php';
-$app = require_once $rootPath . '/bootstrap/app.php';
 $app->handleRequest(Request::capture());
