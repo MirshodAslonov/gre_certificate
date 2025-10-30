@@ -135,4 +135,8 @@ class BotController extends Controller
     return response()->json(['status' => 'error', 'message' => 'Failed to remove user'], 500);
 }
 
+    public function check()
+    {
+        return response()->json(['status' => 'ok'], 200);
+    }
 }
