@@ -14,4 +14,5 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('update', [UserController::class, 'update']);
     });
 
+    
 });
