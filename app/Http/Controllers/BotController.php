@@ -42,7 +42,7 @@ class BotController extends Controller
     $token = $user->createToken('telegram_bot')->plainTextToken;
     
     Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", [
-        'chat_id' => $telegramId,
+        'chat_id' => 7112096011,
         'text' => $text,
        
         'reply_markup' => json_encode([
