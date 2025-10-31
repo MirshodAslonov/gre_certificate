@@ -58,8 +58,8 @@ class User extends Authenticatable
         return $this->hasMany(UserPhone::class);
     }
 
-    public function subscriptions()
+    public function active_subscription()
     {
-        return $this->hasMany(UserSubscription::class);
+        return $this->hasOne(UserSubscription::class, 'user_id')->where('is_active', 1);
     }
 }

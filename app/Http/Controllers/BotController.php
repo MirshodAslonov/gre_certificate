@@ -13,6 +13,7 @@ class BotController extends Controller
 {
     $botToken = config('services.telegram.bot_token');
     $data = $request->all();
+    $frontendUrl = config('services.url.frontend');
     $telegramId = (string) ($data['message']['from']['id'] ?? null);
 
     if (isset($data['message']['chat']['type']) && $data['message']['chat']['type'] === 'supergroup') {
@@ -30,6 +31,9 @@ class BotController extends Controller
             'telegram_id' => $telegramId,
             'status_id'   => 1,
             'role_id'     => 2,
+            'telegram_first_name' => Arr::get($data, 'message.from.first_name', ''),
+            'telegram_last_name'  => Arr::get($data, 'message.from.last_name', ''),
+            'telegram_username'   => Arr::get($data, 'message.from.username', ''),
         ]);
         $exists = false;
         $text = "✅ Siz muvaffaqiyatli ro‘yxatdan o‘tdingiz\n
@@ -50,7 +54,7 @@ class BotController extends Controller
                 [
                     [
                         'text' => $inline_text,
-                        'url' => "https://grecertificate.uz/home?token={$token}"
+                        'url' => $frontendUrl."/home?token={$token}"
                     ]
                 ]
             ]
@@ -84,7 +88,7 @@ class BotController extends Controller
         }
 
         if ($inGroup) {
-            $text = "✅ Siz allaqachon guruhdasiz!";
+            $text = "Siz allaqachon guruhdasiz!";
         } else {
             $inviteResponse = Http::post("https://api.telegram.org/bot{$botToken}/createChatInviteLink", [
                 'chat_id' => $groupId,
@@ -93,18 +97,18 @@ class BotController extends Controller
 
             if ($inviteResponse->successful() && isset($inviteResponse->json()['result']['invite_link'])) {
                 $groupLink = $inviteResponse->json()['result']['invite_link'];
-                $text = "✅ Siz tizimga muvaffaqiyatli ulandingiz!\n" .
-                        "👉 Guruhga qoʻshilish uchun havola (1 martalik):\n{$groupLink}";
+                $text = $groupLink;
             } else {
-                $text = "✅ Siz tizimga ulandingiz, ammo guruh havolasi yaratilishda muammo bo‘ldi";
+                $text = "guruh havolasi yaratilishda muammo bo‘ldi";
             }
         }
-
-        Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", [
-            'chat_id' => $telegramId,
-            'text' => $text,
-            'parse_mode' => 'HTML'
-        ]);
+            
+        // Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", [
+        //     'chat_id' => $telegramId,
+        //     'text' => $text,
+        //     'parse_mode' => 'HTML'
+        // ]);
+        return $text;
     }
 
     public function removeUserFromGroup(int $telegramId)
@@ -129,10 +133,10 @@ class BotController extends Controller
             'text'   => "❌ Siz guruhdan chiqarildingiz.",
         ]);
 
-        return response()->json(['status' => 'success', 'message' => 'User removed from group']);
+        return 'User removed from group';
     }
 
-    return response()->json(['status' => 'error', 'message' => 'Failed to remove user'], 500);
+    return 'Failed to remove user';
 }
 
     public function check()

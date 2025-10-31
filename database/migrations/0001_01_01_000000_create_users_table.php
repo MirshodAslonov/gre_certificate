@@ -17,11 +17,15 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('telegram_first_name')->nullable();
+            $table->string('telegram_last_name')->nullable();
+            $table->string('telegram_username')->nullable();
             $table->unsignedBigInteger('telegram_id')->unique();
             $table->foreignId('status_id')->constrained('user_statuses')->onDelete('cascade');
             $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
             $table->string('password')->nullable();
             $table->integer('gre_amount')->default(0);
+            $table->tinyInteger('is_free_day_expired')->default(0);
             $table->timestamps();
         });
 

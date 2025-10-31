@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BotController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,7 +13,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('auth/get', [UserController::class, 'authGet']);
         Route::put('update', [UserController::class, 'update']);
+        Route::get('get/free/day/link', [UserController::class, 'getFreeDayLink']);
     });
-//oka111
+
+    Route::prefix('telegram_group')->group(function () {
+        Route::post('add/user', [UserController::class, 'addUserToGroup']);
+        Route::post('remove/user', [UserController::class, 'removeUserToGroup']);
+    });
+
+    Route::prefix('subscription')->group(function () {
+        Route::post('add', [SubscriptionController::class, 'add']);
+    });
 
 });

@@ -35,8 +35,12 @@ return [
         ],
     ],
     'telegram' => [
-    'bot_token' => env('TELEGRAM_BOT_TOKEN'),
-    'group_id' => env('TELEGRAM_GROUP_ID'),
-],
+        'bot_token' => env('TELEGRAM_BOT_TOKEN'),
+        'group_id' => env('TELEGRAM_GROUP_ID'),
+    ],
+    'url' => [
+        'frontend' => env('FRONTEND_URL'),
+    ],
+    
 
 ];
