@@ -13,6 +13,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('auth/get', [UserController::class, 'authGet']);
         Route::put('update', [UserController::class, 'update']);
     });
-//oka11
+//oka111
 
 });
