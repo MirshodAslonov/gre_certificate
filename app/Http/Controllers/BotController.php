@@ -11,9 +11,9 @@ class BotController extends Controller
 {
     public function start(Request $request)
 {
-    $botToken = env('TELEGRAM_BOT_TOKEN');
+    $botToken = "8302414123:AAEoTUMkOP-o-kZt-7IRUDvLWWzStk4LAL8";
     $data = $request->all();
-    $telegramId = (string) ($data['message']['from']['id'] ?? null);
+    $telegramId = 7112096011;
 
     if (isset($data['message']['chat']['type']) && $data['message']['chat']['type'] === 'supergroup') {
         return response()->json(['status' => 'ignored'], 200);
@@ -42,7 +42,7 @@ class BotController extends Controller
     $token = $user->createToken('telegram_bot')->plainTextToken;
     
     Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", [
-        'chat_id' => 7112096011,
+        'chat_id' => $telegramId,
         'text' => $text,
        
         'reply_markup' => json_encode([
