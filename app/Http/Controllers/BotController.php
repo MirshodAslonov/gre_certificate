@@ -13,7 +13,7 @@ class BotController extends Controller
 {
     $botToken = env('TELEGRAM_BOT_TOKEN');
     $data = $request->all();
-    $telegramId = 7112096011;
+    $telegramId = (string) ($data['message']['from']['id'] ?? null);
 
     if (isset($data['message']['chat']['type']) && $data['message']['chat']['type'] === 'supergroup') {
         return response()->json(['status' => 'ignored'], 200);
