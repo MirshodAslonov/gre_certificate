@@ -30,7 +30,6 @@ class BotController extends Controller
             'telegram_id' => $telegramId,
             'status_id'   => 1,
             'role_id'     => 2,
-            'password'    => $botToken
         ]);
         $exists = false;
         $text = "✅ Siz muvaffaqiyatli ro‘yxatdan o‘tdingiz\n
