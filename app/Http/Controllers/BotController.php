@@ -51,7 +51,7 @@ class BotController extends Controller
                 [
                     [
                         'text' => $inline_text,
-                        'url' => "http://10.128.158.61:5173/home?token={$token}"
+                        'url' => "https://grecertificate.uz/home?token={$token}"
                     ]
                 ]
             ]
@@ -68,8 +68,8 @@ class BotController extends Controller
 
     public function addUserToGroup(int $telegramId)
     {
-        $botToken = env('TELEGRAM_BOT_TOKEN');
-        $groupId = env('TELEGRAM_GROUP_ID');
+        $botToken = config('services.telegram.bot_token');
+        $groupId = config('services.telegram.group_id');
 
         $checkResponse = Http::get("https://api.telegram.org/bot{$botToken}/getChatMember", [
             'chat_id' => $groupId,
@@ -110,8 +110,8 @@ class BotController extends Controller
 
     public function removeUserFromGroup(int $telegramId)
 {
-    $botToken = env('TELEGRAM_BOT_TOKEN');
-    $groupId = env('TELEGRAM_GROUP_ID');
+    $botToken = config('services.telegram.bot_token');
+    $groupId = config('services.telegram.group_id');
 
     $response = Http::post("https://api.telegram.org/bot{$botToken}/banChatMember", [
         'chat_id' => $groupId,
