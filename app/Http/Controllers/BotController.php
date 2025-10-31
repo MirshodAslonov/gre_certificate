@@ -11,7 +11,7 @@ class BotController extends Controller
 {
     public function start(Request $request)
 {
-    $botToken = "8302414123:AAEoTUMkOP-o-kZt-7IRUDvLWWzStk4LAL8";
+    $botToken = env('TELEGRAM_BOT_TOKEN');
     $data = $request->all();
     $telegramId = (string) ($data['message']['from']['id'] ?? null);
 
