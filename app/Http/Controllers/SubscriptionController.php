@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserSubscription;
 use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 
@@ -21,4 +22,24 @@ class SubscriptionController extends Controller
         $res = SubscriptionService::addSubscription($data);
         return response()->json($res);
     }
+
+    public function listExpires(Request $request)
+    {
+        $today = now();
+        $subscriptions = UserSubscription::where('expires_at', '<=', $today)
+            ->where('is_active',1)
+            ->with('user')
+            ->get();
+        return response()->json($subscriptions);
+    }
+
+    public function listUserSubscription($user_id)
+    {
+        $subscriptions = UserSubscription::where('user_id', $user_id)
+            ->with('user')
+            ->orderBy('created_at','desc')
+            ->get();
+        return response()->json($subscriptions);
+    }
+
 }

@@ -10,6 +10,23 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function list(Request $request)
+    {
+        $data = $request->validate([
+            'telegram_id' => 'nullable',
+        ]);
+        $users = User::when(isset($data['telegram_id']), function ($query) use ($data) {
+            $query->where('telegram_id','like', '%'.$data['telegram_id'].'%');
+        })->get();
+        return response()->json($users);
+    }
+
+    public function get($id)
+    {
+        $user = User::with('active_subscription')->findOrFail($id);
+        return response()->json($user);
+    }
+
     public function update(Request $request)
     {
         $user = $request->user();
