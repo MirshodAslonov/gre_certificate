@@ -54,7 +54,6 @@ class BotController extends Controller
                 [
                     [
                         'text' => $inline_text,
-                        // 'url' => "https://grecertificate.uz/home?token={$token}"
                         'url' => $frontendUrl."/home?token={$token}"
                     ]
                 ]

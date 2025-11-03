@@ -17,7 +17,9 @@ class UserController extends Controller
         ]);
         $users = User::when(isset($data['telegram_id']), function ($query) use ($data) {
             $query->where('telegram_id','like', '%'.$data['telegram_id'].'%');
-        })->get();
+        })
+        ->orderBy('id','desc')
+        ->get();
         return response()->json($users);
     }
 
