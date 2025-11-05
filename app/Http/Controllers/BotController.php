@@ -121,8 +121,8 @@ class BotController extends Controller
         'chat_id' => $groupId,
         'user_id' => $telegramId,
     ]);
-    $user_id = User::where('telegram_id', (string)$telegramId)->first();
-    dd($user_id,$telegramId);
+    $user_id = User::where('telegram_id', (string)$telegramId)->first()->id;
+    
     $invite_link  = UserSubscription::where('user_id',$user_id)
         ->orderBy('id','desc')
         ->first()
