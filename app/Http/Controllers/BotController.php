@@ -145,7 +145,7 @@ class BotController extends Controller
         Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", [
             'chat_id' => $telegramId,
             'text'   => "❌ Siz guruhdan chiqarildingiz.
-💰 Qayta ulanish uchun to'lovni amalga oshiring.
+✅ Qayta ulanish uchun to'lovni amalga oshiring.
 📞 Aloqa uchun: @aslonov_official",
         ]);
 
