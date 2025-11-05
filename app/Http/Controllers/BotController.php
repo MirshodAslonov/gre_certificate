@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserSubscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
@@ -120,13 +121,25 @@ class BotController extends Controller
         'chat_id' => $groupId,
         'user_id' => $telegramId,
     ]);
-    
+    $user_id = User::where('telegram_id', $telegramId)->first()->id;
+    $invite_link  = UserSubscription::where('user_id',$user_id)
+        ->orderBy('id','desc')
+        ->first()
+        ->invite_link;
     if ($response->successful()) {
         Http::post("https://api.telegram.org/bot{$botToken}/unbanChatMember", [
             'chat_id' => $groupId,
             'user_id' => $telegramId,
             'only_if_banned' => true
         ]);
+
+        if ($invite_link) {
+            Http::post("https://api.telegram.org/bot{$botToken}/revokeChatInviteLink", [
+                'chat_id' => $groupId,
+                'invite_link' => $invite_link,
+            ]);
+
+        }
 
         Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", [
             'chat_id' => $telegramId,
