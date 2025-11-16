@@ -9,9 +9,8 @@ class TelegramController extends Controller
 {
     public function start(Request $request)
 {
-    return $this->sendMessage(7112096011, "⚠️ Fayl juda katta (50MB+). Boshqa sifatni tanlang.");
+    // return $this->sendMessage(7112096011, "⚠️ Fayl juda katta (50MB+). Boshqa sifatni tanlang.");
     $data = $request->all();
-    $token = config('services.telegram.you_tube_bot_token');
 
     // Tugmani bosganda callback qaytadi
     if (isset($data['callback_query'])) {
@@ -33,9 +32,9 @@ class TelegramController extends Controller
     $text   = $data['message']['text'];
 
     // YouTube link bo'lsa
-    if (str_contains($text, 'youtube.com') || str_contains($text, 'youtu.be')) {
-        return $this->askQuality($chatId, $text);
-    }
+    // if (str_contains($text, 'youtube.com') || str_contains($text, 'youtu.be')) {
+    //     return $this->askQuality($chatId, $text);
+    // }
 
     return $this->sendMessage($chatId, "YouTube videoni linkini yuboring 👇");
 }
