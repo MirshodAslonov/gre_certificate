@@ -79,7 +79,7 @@ public function askQuality($chatId, $url)
     $ext = $format == 'mp3' ? 'mp3' : 'mp4';
     $file = storage_path("app/video.$ext");
 
-    $ytDlp = '/home/grecerti/yt-dlp'; // bu sizning yuklagan faylingiz
+   $ytDlp = '/home/grecerti/yt-dlp'; // sizning home papkangizdagi binary
 
     if ($format == 'mp3') {
         $cmd = "$ytDlp -x --audio-format mp3 -o " . escapeshellarg($file) . " " . escapeshellarg($url) . " 2>&1";
