@@ -79,12 +79,14 @@ public function askQuality($chatId, $url)
     $ext = $format == 'mp3' ? 'mp3' : 'mp4';
     $file = storage_path("app/video.$ext");
 
+    $ytDlp = '/home/grecerti/yt-dlp'; // bu sizning yuklagan faylingiz
+
     if ($format == 'mp3') {
-        $cmd = "yt-dlp -x --audio-format mp3 -o " . escapeshellarg($file) . " " . escapeshellarg($url) . " 2>&1";
+        $cmd = "$ytDlp -x --audio-format mp3 -o " . escapeshellarg($file) . " " . escapeshellarg($url) . " 2>&1";
     } elseif ($format == '1080') {
-        $cmd = "yt-dlp -f 'bestvideo[height<=1080]+bestaudio' --merge-output-format mp4 -o " . escapeshellarg($file) . " " . escapeshellarg($url) . " 2>&1";
+        $cmd = "$ytDlp -f 'bestvideo[height<=1080]+bestaudio' --merge-output-format mp4 -o " . escapeshellarg($file) . " " . escapeshellarg($url) . " 2>&1";
     } else { // 720
-        $cmd = "yt-dlp -f 'bestvideo[height<=720]+bestaudio' --merge-output-format mp4 -o " . escapeshellarg($file) . " " . escapeshellarg($url) . " 2>&1";
+        $cmd = "$ytDlp -f 'bestvideo[height<=720]+bestaudio' --merge-output-format mp4 -o " . escapeshellarg($file) . " " . escapeshellarg($url) . " 2>&1";
     }
 
     $output = shell_exec($cmd);
