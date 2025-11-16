@@ -37,6 +37,7 @@ return [
     'telegram' => [
         'bot_token' => env('TELEGRAM_BOT_TOKEN'),
         'group_id' => env('TELEGRAM_GROUP_ID'),
+        'you_tube_bot_token' => env('TELEGRAM_BOT_TOKEN_YOU_TUBE'),
     ],
     'url' => [
         'frontend' => env('FRONTEND_URL'),
