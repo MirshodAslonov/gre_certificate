@@ -9,7 +9,7 @@ class TelegramController extends Controller
 {
     public function start(Request $request)
 {
-    // return $this->sendMessage(7112096011, "⚠️ Fayl juda katta (50MB+). Boshqa sifatni tanlang.");
+    return $this->sendMessage(7112096011, "⚠️ Fayl juda katta (50MB+). Boshqa sifatni tanlang.");
     $data = $request->all();
     $token = config('services.telegram.you_tube_bot_token');
 
