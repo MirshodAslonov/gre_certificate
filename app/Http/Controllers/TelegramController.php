@@ -32,9 +32,9 @@ class TelegramController extends Controller
     $text   = $data['message']['text'];
 
     // YouTube link bo'lsa
-    // if (str_contains($text, 'youtube.com') || str_contains($text, 'youtu.be')) {
-    //     return $this->askQuality($chatId, $text);
-    // }
+    if (str_contains($text, 'youtube.com') || str_contains($text, 'youtu.be')) {
+        return $this->askQuality($chatId, $text);
+    }
 
     return $this->sendMessage($chatId, "YouTube videoni linkini yuboring 👇");
 }
