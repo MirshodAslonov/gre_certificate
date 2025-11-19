@@ -14,9 +14,14 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'telegram_id' => 'nullable',
+            'status_id' => 'nullable',
         ]);
         $users = User::when(isset($data['telegram_id']), function ($query) use ($data) {
-            $query->where('telegram_id','like', '%'.$data['telegram_id'].'%');
+            $query->where('telegram_id','like', '%'.$data['telegram_id'].'%')
+                    ->orWhere('phone', 'like', '%'.$data['telegram_id'].'%');
+        })
+        ->when(isset($data['status_id']), function ($query) use ($data) {
+            $query->where('status_id', $data['status_id']);
         })
         ->orderBy('id','desc')
         ->get();
@@ -25,7 +30,10 @@ class UserController extends Controller
 
     public function get($id)
     {
-        $user = User::with('active_subscription')->findOrFail($id);
+        $user = User::where('id', $id)
+        ->with('active_subscription')
+        ->with('status')
+        ->first();
         return response()->json($user);
     }
 
@@ -36,9 +44,32 @@ class UserController extends Controller
         $data = $request->validate([
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string',
         ]);
+        if (!empty($data['phone'])) {
+            $data['phone'] = preg_replace('/\D/', '', $data['phone']); 
+        }
+        $user->update($data);
 
+        return response()->json([
+            'success' => true,
+            'message' => 'User successfully updated',
+            'user' => $user,
+        ]);
+    }
+    public function adminUserUpdate(Request $request,int $user_id)
+    {
+        $user = User::findOrFail($user_id);
+        
+        $data = $request->validate([
+            'first_name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'phone' => 'nullable|string',
+            'status_id' => 'nullable|integer|exists:user_statuses,id',
+        ]);
+        if (!empty($data['phone'])) {
+            $data['phone'] = preg_replace('/\D/', '', $data['phone']); 
+        }
         $user->update($data);
 
         return response()->json([

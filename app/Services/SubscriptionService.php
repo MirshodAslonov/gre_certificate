@@ -15,6 +15,15 @@ class SubscriptionService
 {
     public static function addSubscription(array $data)
 {
+    $old_active_subscription = UserSubscription::where('user_id', $data['user_id'])
+        ->where('is_active', true)
+        ->first();
+    if ($old_active_subscription) {
+        $active_days = now()->diffInDays($old_active_subscription->expires_at, false);
+        if ($active_days > 0) {
+            $data['expires_at'] = now()->addDays($active_days + 30);
+        }
+    }
     $old_subscription = UserSubscription::where('user_id', $data['user_id'])
         ->update([
             'is_active' => false,

@@ -12,10 +12,17 @@ class ListsController extends Controller
     {
         $data = $request->validate([
             'telegram_id' => 'nullable',
+            'status_id' => 'nullable',
         ]);
         $users = User::when(isset($data['telegram_id']), function ($query) use ($data) {
-            $query->where('telegram_id','like', '%'.$data['telegram_id'].'%');
+            $query->where(function ($q) use ($data) {
+                $q->where('telegram_id','like', '%'.$data['telegram_id'].'%')
+                ->orWhere('phone', 'like', '%'.$data['telegram_id'].'%');
+            });
         })
+            ->when(isset($data['status_id']), function ($query) use ($data) {
+                $query->where('status_id', $data['status_id']);
+            })
         ->orderBy('id','desc')
         ->get();
         return response()->json($users);
