@@ -52,6 +52,7 @@ class ListsController extends Controller
         ]);
 
         $subscriptions = UserSubscription::whereColumn('total_amount','>','paid_amount')
+            ->where('is_active',1)
             ->whereHas('user', function($query) use ($data) {
                 if (isset($data['telegram_id'])) {
                     $query->where('telegram_id','like', '%'.$data['telegram_id'].'%');

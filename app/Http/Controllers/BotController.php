@@ -89,7 +89,7 @@ class BotController extends Controller
         }
 
         if ($inGroup) {
-            $text = "Siz allaqachon guruhdasiz!";
+            $text = "Sizning obunangiz yangilandi.";
         } else {
             $inviteResponse = Http::post("https://api.telegram.org/bot{$botToken}/createChatInviteLink", [
                 'chat_id' => $groupId,

@@ -7,6 +7,7 @@ use App\Models\UserSubscription;
 use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
@@ -144,6 +145,34 @@ class UserController extends Controller
 
         return response()->json([
             'message' => $text,
+        ]);
+    }
+
+    public function remindPayment(Request $request)
+    {
+        $data = $request->validate([
+            'id' => 'required|exists:users,id',
+        ]);
+        $user = User::find($data['id']);
+        $telegramId = $user->telegram_id;
+        $paket = UserSubscription::where('user_id',$user->id)->where('is_active',1)->first();
+        $payment_amount = ($paket->total_amount-$paket->paid_amount)/1000;
+        $botToken = config('services.telegram.bot_token');
+        Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", [
+            'chat_id' => $telegramId,
+            'text'   => 
+"Assalomu alaykum 🌿
+
+Sizning obunangiz bo‘yicha {$payment_amount } ming so‘m qoldiq mavjud.
+
+Iltimos, o‘zingizga qulay vaqtda to‘lovni amalga oshirib qo‘ysangiz juda xursand bo‘lamiz 🙏
+
+Agar savollar bo‘lsa: @aslonov_official
+",
+        ]);
+
+        return response()->json([
+            'message' => 'success'
         ]);
     }
 }

@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('telegram_group')->group(function () {
         Route::post('add/user', [UserController::class, 'addUserToGroup']);
         Route::post('remove/user', [UserController::class, 'removeUserToGroup']);
+        Route::post('remind/payment', [UserController::class, 'remindPayment']);
     });
 
     Route::prefix('subscription')->group(function () {
