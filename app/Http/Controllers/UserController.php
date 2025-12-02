@@ -138,8 +138,21 @@ class UserController extends Controller
         ]);
         $user = User::find($data['id']);
         
-        UserSubscription::where('user_id',$user->id)->where('is_active',1)->update(['is_active'=>0]);
+        $subscription = UserSubscription::where('user_id', $user->id)
+            ->where('is_active', 1)
+            ->first();
 
+        if ($subscription) {
+
+            // expires_at bugungi sanadan katta bo'lsa
+            if ($subscription->expires_at > now()) {
+                $subscription->expires_at = now();
+                $subscription->update(['expires_at' => now()]);
+            }
+
+            // har holda active bo‘lganini o‘chirib qo‘yish
+            $subscription->update(['is_active' => 0]);
+        }
         $botController = new BotController();
         $text = $botController->removeUserFromGroup($user->telegram_id);
 
