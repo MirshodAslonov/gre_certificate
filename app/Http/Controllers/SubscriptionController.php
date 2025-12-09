@@ -11,6 +11,12 @@ class SubscriptionController extends Controller
 {
     public function add(Request $request)
     {
+        if($request->user()->role_id != 1){
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 403);
+        }
         $data = $request->validate([
             "user_id" => "required|exists:users,id",
             'total_amount' => 'nullable|numeric',
