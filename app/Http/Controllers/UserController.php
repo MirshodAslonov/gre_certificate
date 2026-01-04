@@ -90,7 +90,13 @@ class UserController extends Controller
     public function getFreeDayLink(Request $request)
     {
         $user = $request->user();
-
+        $user_subscription = UserSubscription::where('user_id',$user->id)
+            ->first();
+            if($user_subscription){
+                return response()->json([
+                    'free_day_link' => 'Siz allaqachon paketga ega bo‘lgansiz!',
+                ]);
+            }
         $user_subscription = UserSubscription::where('user_id',$user->id)
         ->where('total_amount',0)
         ->first();
