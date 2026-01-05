@@ -158,6 +158,7 @@ class UserController extends Controller
 
             // har holda active bo‘lganini o‘chirib qo‘yish
             $subscription->update(['is_active' => 0]);
+            $user->update(['status_id' => 14]); // status_id ni 14 ga o‘zgartirish (Aktive obunasi tugaganlar)
         }
         $botController = new BotController();
         $text = $botController->removeUserFromGroup($user->telegram_id);
